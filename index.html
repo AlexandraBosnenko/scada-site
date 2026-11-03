@@ -110,6 +110,10 @@
         <span id="grid-status-text">Зовнішня мережа: 230V OK</span>
       </button>
 
+      <button onclick="openNodeModal('inverter')" class="px-3 py-1.5 rounded-lg bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/50 text-indigo-300 font-medium transition flex items-center gap-1.5">
+        <span>📊</span> <span>Діаграми ШІМ інвертора</span>
+      </button>
+
       <button onclick="exportData()" class="px-3 py-1.5 rounded-lg bg-cyan-700 hover:bg-cyan-600 border border-cyan-400/50 text-white font-bold transition">
         ⬇ Вивантажити дані (.txt)
       </button>
@@ -346,7 +350,10 @@
             <text id="inv-ac-text" x="16" y="28" fill="#38bdf8" font-size="11" font-weight="bold" font-family="monospace" text-anchor="middle">AC</text>
           </g>
           
-          <text id="inv-hint-text" x="80" y="90" fill="#38bdf8" font-size="9" font-family="monospace" text-anchor="middle">⚙ Натисніть для налаштування</text>
+          <g transform="translate(15, 75)">
+            <rect x="0" y="0" width="130" height="18" rx="4" fill="#032541" stroke="#38bdf8" stroke-width="0.9"/>
+            <text x="65" y="12" fill="#7dd3fc" font-size="8.5" font-weight="bold" font-family="monospace" text-anchor="middle">📊 Діаграми ШІМ &amp; RL</text>
+          </g>
         </g>
 
         <!-- Inverter Live Telemetry -->
@@ -627,7 +634,7 @@
 
   <!-- ================= UNIFIED SCADA NODE CONFIGURATION MODAL ================= -->
   <div id="modal-container" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-[#0f172a] border border-cyan-500/60 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+    <div id="modal-card" class="bg-[#0f172a] border border-cyan-500/60 rounded-2xl max-w-2xl w-full p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-700">
         <h3 id="modal-title" class="text-base font-bold text-cyan-400">⚙️ Налаштування елемента</h3>
         <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg">✕</button>
@@ -1565,30 +1572,155 @@
       container.classList.remove('hidden');
 
       if (nodeType === 'inverter') {
-        title.innerHTML = '⚙️ Налаштування мережевого інвертора 5.0 кВт';
+        title.innerHTML = '⚡ Автономний інвертор: параметри та часові діаграми ШІМ';
         body.innerHTML = `
-          <div>
-            <label class="block font-medium text-slate-300 mb-1.5">Кількість фаз:</label>
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="setInvPhase(1)" class="p-2.5 rounded-lg border ${state.inverter.phases === 1 ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">1-Фазний (230 В)</button>
-              <button onclick="setInvPhase(3)" class="p-2.5 rounded-lg border ${state.inverter.phases === 3 ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">3-Фазний (400 В)</button>
+          <!-- Section 1: Exact Timing Diagram matching lab diagram -->
+          <div class="p-3.5 rounded-xl bg-white border border-slate-300 shadow-md">
+            <div class="text-sm font-bold text-slate-900 text-center mb-2 font-sans tracking-tight">Типові часові діаграми автономного інвертора з RL-навантаженням</div>
+            
+            <!-- Dual Oscilloscope Subplots (uAB and iH) -->
+            <svg id="inverter-chart-svg" viewBox="0 0 540 240" class="w-full h-auto select-none font-sans block">
+              <!-- Top Subplot: uAB, B -->
+              <rect x="48" y="10" width="480" height="88" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+              
+              <!-- Top Grid lines -->
+              <line x1="48" y1="32" x2="528" y2="32" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
+              <line x1="48" y1="54" x2="528" y2="54" stroke="#cbd5e1" stroke-width="0.9" stroke-dasharray="2 2"/>
+              <line x1="48" y1="76" x2="528" y2="76" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
+
+              <line x1="108" y1="10" x2="108" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="168" y1="10" x2="168" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="228" y1="10" x2="228" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="288" y1="10" x2="288" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="348" y1="10" x2="348" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="408" y1="10" x2="408" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="468" y1="10" x2="468" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+
+              <!-- Waveform uAB path -->
+              <path id="path-uab" fill="none" stroke="#1f77b4" stroke-width="1.3"/>
+
+              <!-- Y Axis labels top -->
+              <text x="42" y="16" fill="#1e293b" font-size="9" text-anchor="end" font-sans>100</text>
+              <text x="42" y="35" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>50</text>
+              <text x="42" y="57" fill="#1e293b" font-size="9" text-anchor="end" font-sans>0</text>
+              <text x="42" y="79" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>-50</text>
+              <text x="42" y="99" fill="#1e293b" font-size="9" text-anchor="end" font-sans>-100</text>
+              <text x="14" y="54" fill="#0f172a" font-size="10" font-weight="bold" text-anchor="middle" font-sans transform="rotate(-90 14 54)">uAB, В</text>
+
+              <!-- Bottom Subplot: iH, A -->
+              <rect x="48" y="125" width="480" height="92" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+              
+              <!-- Bottom Grid lines -->
+              <line x1="48" y1="148" x2="528" y2="148" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
+              <line x1="48" y1="171" x2="528" y2="171" stroke="#cbd5e1" stroke-width="0.9" stroke-dasharray="2 2"/>
+              <line x1="48" y1="194" x2="528" y2="194" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
+
+              <line x1="108" y1="125" x2="108" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="168" y1="125" x2="168" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="228" y1="125" x2="228" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="288" y1="125" x2="288" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="348" y1="125" x2="348" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="408" y1="125" x2="408" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="468" y1="125" x2="468" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+
+              <!-- Waveform iH path -->
+              <path id="path-ih" fill="none" stroke="#1f77b4" stroke-width="1.6"/>
+
+              <!-- Y Axis labels bottom -->
+              <text x="42" y="132" fill="#1e293b" font-size="9" text-anchor="end" font-sans>4</text>
+              <text x="42" y="151" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>2</text>
+              <text x="42" y="174" fill="#1e293b" font-size="9" text-anchor="end" font-sans>0</text>
+              <text x="42" y="197" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>-2</text>
+              <text x="42" y="219" fill="#1e293b" font-size="9" text-anchor="end" font-sans>-4</text>
+              <text x="14" y="171" fill="#0f172a" font-size="10" font-weight="bold" text-anchor="middle" font-sans transform="rotate(-90 14 171)">iH, А</text>
+
+              <!-- Shared X Ticks: 20.0 to 40.0 ms -->
+              <text x="48" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">20.0</text>
+              <text x="108" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">22.5</text>
+              <text x="168" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">25.0</text>
+              <text x="228" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">27.5</text>
+              <text x="288" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">30.0</text>
+              <text x="348" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">32.5</text>
+              <text x="408" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">35.0</text>
+              <text x="468" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">37.5</text>
+              <text x="528" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">40.0</text>
+
+              <text x="288" y="239" fill="#0f172a" font-size="10" font-weight="bold" font-sans text-anchor="middle">t, мс</text>
+            </svg>
+          </div>
+
+          <!-- Interactive controls for the waveform -->
+          <div class="grid grid-cols-2 gap-3 p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs font-mono">
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1">
+                <span>Частота комутації ШІМ:</span>
+                <span id="lbl-pwm-fc" class="text-cyan-300 font-bold">2.4 кГц</span>
+              </div>
+              <input id="slider-pwm-fc" type="range" min="1.0" max="4.0" step="0.2" value="2.4" oninput="setInverterWavePwm(this.value)" class="w-full accent-cyan-500">
+            </div>
+            <div>
+              <div class="flex justify-between text-slate-300 mb-1">
+                <span>Індуктивність навантаження (L):</span>
+                <span id="lbl-pwm-l" class="text-cyan-300 font-bold">15 мГн</span>
+              </div>
+              <input id="slider-pwm-l" type="range" min="5" max="35" step="2" value="15" oninput="setInverterWaveL(this.value)" class="w-full accent-cyan-500">
             </div>
           </div>
-          <div>
-            <label class="block font-medium text-slate-300 mb-1.5">Топологія / схемотехніка:</label>
-            <div class="grid grid-cols-2 gap-2">
-              <button onclick="setInvTech('thyristor')" class="p-2.5 rounded-lg border ${state.inverter.tech === 'thyristor' ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">На тиристорах/IGBT (ККД 97.6%)</button>
-              <button onclick="setInvTech('transformer')" class="p-2.5 rounded-lg border ${state.inverter.tech === 'transformer' ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">З трансформатором (ККД 94.2%)</button>
-            </div>
-          </div>
-          <div>
-            <label class="block font-medium text-slate-300 mb-1">Номінальна потужність інвертора:</label>
+
+          <!-- Animation & State Controls -->
+          <div class="flex items-center justify-between text-xs px-1">
             <div class="flex items-center gap-2">
-              <input type="range" min="3" max="8" step="0.5" value="${state.inverter.ratedKw}" onchange="setInvPower(this.value)" class="w-full accent-cyan-500">
-              <span class="font-mono text-cyan-300 font-bold w-16 text-right">${state.inverter.ratedKw} кВт</span>
+              <button onclick="toggleInverterWaveAnim()" class="px-3 py-1.5 rounded-lg bg-cyan-950 border border-cyan-500/60 text-cyan-300 hover:bg-cyan-900 transition flex items-center gap-1.5 font-bold">
+                <span id="icon-inverter-anim">⏸</span> <span id="txt-inverter-anim">Зупинити анімацію</span>
+              </button>
+              <button onclick="resetInverterWaveParams()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition">
+                ↺ Скинути
+              </button>
+            </div>
+            <div class="text-[11px] text-slate-400 font-mono">
+              U_DC = 100 В · f_вих = 50.0 Гц · cosφ = 0.85
+            </div>
+          </div>
+
+          <!-- Theoretical & Educational physics note -->
+          <div class="p-2.5 rounded-lg bg-cyan-950/30 border border-cyan-500/30 text-[11px] text-slate-300 space-y-1">
+            <div class="text-cyan-300 font-bold flex items-center gap-1.5">
+              <span>💡</span> <span>Фізичний принцип перетворення (постійний струм ➔ ШІМ ➔ синусоїда):</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed font-sans">
+              Інвертор перетворює постійний струм фотомодулів/АКБ за принципом широтно-імпульсної модуляції (ШІМ).
+              <strong>Верхній графік (uAB)</strong>: напівпровідникові ключі (IGBT) формують прямокутні імпульси напруги постійної амплітуди (±100 В), де тривалість імпульсу змінюється за синусоїдальним законом.
+              <strong>Нижній графік (iH)</strong>: завдяки індуктивності RL-навантаження (рівняння L·di/dt + R·i = uAB) високочастотні гармоніки фільтруються, внаслідок чого формується чиста синусоїда вихідного струму частотою 50 Гц із дрібними комутаційними пульсаціями.
+            </p>
+          </div>
+
+          <!-- Section 2: Technical Inverter Ratings & Mode Controls -->
+          <div class="pt-2 border-t border-slate-800 space-y-3">
+            <div>
+              <label class="block font-medium text-slate-300 mb-1.5">Кількість фаз інвертора:</label>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="setInvPhase(1)" class="p-2.5 rounded-lg border ${state.inverter.phases === 1 ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">1-Фазний (230 В)</button>
+                <button onclick="setInvPhase(3)" class="p-2.5 rounded-lg border ${state.inverter.phases === 3 ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">3-Фазний (400 В)</button>
+              </div>
+            </div>
+            <div>
+              <label class="block font-medium text-slate-300 mb-1.5">Топологія / схемотехніка ключів:</label>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="setInvTech('thyristor')" class="p-2.5 rounded-lg border ${state.inverter.tech === 'thyristor' ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">На тиристорах/IGBT (ККД 97.6%)</button>
+                <button onclick="setInvTech('transformer')" class="p-2.5 rounded-lg border ${state.inverter.tech === 'transformer' ? 'border-cyan-500 bg-cyan-950/60 text-cyan-300 font-bold' : 'border-slate-700 bg-slate-800 text-slate-400'}">З трансформатором (ККД 94.2%)</button>
+              </div>
+            </div>
+            <div>
+              <label class="block font-medium text-slate-300 mb-1">Номінальна потужність інвертора:</label>
+              <div class="flex items-center gap-2">
+                <input type="range" min="3" max="8" step="0.5" value="${state.inverter.ratedKw}" onchange="setInvPower(this.value)" class="w-full accent-cyan-500">
+                <span class="font-mono text-cyan-300 font-bold w-16 text-right">${state.inverter.ratedKw} кВт</span>
+              </div>
             </div>
           </div>
         `;
+        // Draw first frame immediately
+        setTimeout(() => drawInverterPwmWave(invWaveTime), 20);
       } 
       else if (nodeType === 'battery') {
         title.innerHTML = '🔋 Налаштування акумуляторної батареї (АКБ)';
@@ -2032,6 +2164,156 @@
       pRing.setAttribute('opacity', (0.35 + 0.35 * Math.sin(animTime * 3.2)).toFixed(2));
     }
 
+    // ================= INVERTER SPWM & RL TIMING DIAGRAMS ENGINE =================
+    let invWaveTime = 0;
+    let invWaveRunning = true;
+    let invWavePwmFc = 2400; // Hz
+    let invWaveL = 15; // mH
+
+    function toggleInverterWaveAnim() {
+      invWaveRunning = !invWaveRunning;
+      const btn = document.getElementById('txt-inverter-anim');
+      const icon = document.getElementById('icon-inverter-anim');
+      if (btn) btn.textContent = invWaveRunning ? 'Зупинити анімацію' : 'Запустити анімацію';
+      if (icon) icon.textContent = invWaveRunning ? '⏸' : '▶';
+    }
+
+    function setInverterWavePwm(val) {
+      invWavePwmFc = parseFloat(val) * 1000;
+      const lbl = document.getElementById('lbl-pwm-fc');
+      if (lbl) lbl.textContent = `${parseFloat(val).toFixed(1)} кГц`;
+      drawInverterPwmWave(invWaveTime);
+    }
+
+    function setInverterWaveL(val) {
+      invWaveL = parseFloat(val);
+      const lbl = document.getElementById('lbl-pwm-l');
+      if (lbl) lbl.textContent = `${invWaveL} мГн`;
+      drawInverterPwmWave(invWaveTime);
+    }
+
+    function resetInverterWaveParams() {
+      invWavePwmFc = 2400;
+      invWaveL = 15;
+      invWaveTime = 0;
+      invWaveRunning = true;
+      const s1 = document.getElementById('slider-pwm-fc');
+      if (s1) s1.value = '2.4';
+      const s2 = document.getElementById('slider-pwm-l');
+      if (s2) s2.value = '15';
+      const lbl1 = document.getElementById('lbl-pwm-fc');
+      if (lbl1) lbl1.textContent = '2.4 кГц';
+      const lbl2 = document.getElementById('lbl-pwm-l');
+      if (lbl2) lbl2.textContent = '15 мГн';
+      const btn = document.getElementById('txt-inverter-anim');
+      const icon = document.getElementById('icon-inverter-anim');
+      if (btn) btn.textContent = 'Зупинити анімацію';
+      if (icon) icon.textContent = '⏸';
+      drawInverterPwmWave(0);
+    }
+
+    function drawInverterPwmWave(tOffset) {
+      const pathUab = document.getElementById('path-uab');
+      const pathIh = document.getElementById('path-ih');
+      if (!pathUab || !pathIh) return;
+
+      const tStart = 20.0;
+      const tEnd = 40.0;
+      const xStart = 48;
+      const xEnd = 528;
+      const xSpan = xEnd - xStart; // 480 px
+
+      const yTopHigh = 16;  // +100 V
+      const yTopLow = 92;   // -100 V
+      const yBotZero = 171; // 0 A
+      const yBotScale = 40; // 4 A -> 40 px
+
+      // Generate uAB square PWM pulses
+      const fc = invWavePwmFc;
+      const Tc_ms = 1000 / fc;
+      const m = 0.86;
+      const uPts = [];
+
+      const numCycles = Math.ceil(22 / Tc_ms) + 2;
+      const shiftRem = (tOffset * 1000) % Tc_ms;
+
+      let prevY = null;
+
+      for (let k = -1; k <= numCycles; k++) {
+        const cycleStart = tStart + k * Tc_ms - shiftRem;
+        const cycleMid = cycleStart + Tc_ms / 2;
+        const theta = 2 * Math.PI * 50 * ((cycleMid + tOffset * 1000 - 20.6) / 1000);
+        const D = Math.max(0.04, Math.min(0.96, 0.5 * (1 + m * Math.sin(theta))));
+        const Ton = D * Tc_ms;
+        const tUp = cycleStart + (Tc_ms - Ton) / 2;
+        const tDown = tUp + Ton;
+        const cycleEnd = cycleStart + Tc_ms;
+
+        const events = [
+          { t: cycleStart, y: yTopLow },
+          { t: tUp, y: yTopHigh },
+          { t: tDown, y: yTopLow },
+          { t: cycleEnd, y: yTopLow }
+        ];
+
+        for (let e = 0; e < events.length; e++) {
+          const ev = events[e];
+          const px = xStart + ((ev.t - tStart) / 20.0) * xSpan;
+          const clampedX = Math.max(xStart, Math.min(xEnd, px));
+
+          if (ev.t >= tStart - 0.5 && ev.t <= tEnd + 0.5) {
+            if (uPts.length === 0) {
+              uPts.push(`M ${clampedX.toFixed(1)} ${ev.y}`);
+            } else {
+              uPts.push(`L ${clampedX.toFixed(1)} ${prevY}`);
+              uPts.push(`L ${clampedX.toFixed(1)} ${ev.y}`);
+            }
+            prevY = ev.y;
+          }
+        }
+      }
+      pathUab.setAttribute('d', uPts.join(' '));
+
+      // Generate iH filtered sine wave with inductive ripple
+      const iSteps = 400;
+      const dt_step = 20.0 / iSteps;
+      const iPts = [];
+      const ripAmp = 0.28 * (15 / invWaveL) * (2400 / fc);
+
+      for (let s = 0; s <= iSteps; s++) {
+        const t_cur = tStart + s * dt_step;
+        const px = xStart + (s / iSteps) * xSpan;
+        const theta = 2 * Math.PI * 50 * ((t_cur + tOffset * 1000 - 20.6) / 1000);
+
+        // Sine fundamental
+        const baseI = 3.92 * Math.sin(theta - 0.22);
+
+        // Triangular inductive ripple
+        const carrierPhi = ((t_cur + tOffset * 1000) * fc / 1000) % 1.0;
+        const tri = carrierPhi < 0.5 ? (4 * carrierPhi - 1) : (3 - 4 * carrierPhi);
+        const curI = baseI + tri * ripAmp * (1 - 0.35 * Math.cos(theta));
+
+        const py = yBotZero - (curI / 4.0) * yBotScale;
+        const clampedY = Math.max(128, Math.min(214, py));
+
+        if (s === 0) {
+          iPts.push(`M ${px.toFixed(1)} ${clampedY.toFixed(1)}`);
+        } else {
+          iPts.push(`L ${px.toFixed(1)} ${clampedY.toFixed(1)}`);
+        }
+      }
+      pathIh.setAttribute('d', iPts.join(' '));
+    }
+
+    function updateInverterPwmDiagram(dt) {
+      if (document.getElementById('path-uab')) {
+        if (invWaveRunning) {
+          invWaveTime += dt * 0.008; // smooth slow drift
+        }
+        drawInverterPwmWave(invWaveTime);
+      }
+    }
+
     function runScadaAnimation(now) {
       const dt = Math.min(0.1, (now - lastAnimFrame) / 1000);
       lastAnimFrame = now;
@@ -2039,6 +2321,7 @@
 
       updateOscilloscope(dt);
       updateInsolation(dt);
+      updateInverterPwmDiagram(dt);
 
       requestAnimationFrame(runScadaAnimation);
     }
