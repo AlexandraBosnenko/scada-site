@@ -11,7 +11,12 @@
   <meta property="og:description" content="Навчальний онлайн-тренажер SCADA сонячної електростанції 5 кВт">
   <meta property="og:url" content="https://valeriiasukhomlyn.github.io/scada-site/">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="config.js"></script>
+  <script>
+    window.SCADA_CONFIG = {
+      adminPasswordSha256: '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
+      firebaseUrl: 'https://scada-site-default-rtdb.europe-west1.firebasedatabase.app'
+    };
+  </script>
   <style>
     @keyframes flowForward {
       from { stroke-dashoffset: 28; }
