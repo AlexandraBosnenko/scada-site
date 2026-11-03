@@ -1574,96 +1574,110 @@
       if (nodeType === 'inverter') {
         title.innerHTML = '⚡ Автономний інвертор: параметри та часові діаграми ШІМ';
         body.innerHTML = `
-          <!-- Section 1: Exact Timing Diagram matching lab diagram -->
-          <div class="p-3.5 rounded-xl bg-white border border-slate-300 shadow-md">
-            <div class="text-sm font-bold text-slate-900 text-center mb-2 font-sans tracking-tight">Типові часові діаграми автономного інвертора з RL-навантаженням</div>
+          <!-- Section 1: Exact Timing Diagram in Deep SCADA Cyber Theme -->
+          <div class="p-3.5 rounded-xl bg-[#040914] border border-cyan-500/50 shadow-[0_0_25px_rgba(6,182,212,0.18)]">
+            <div class="text-xs font-bold text-cyan-300 text-center mb-2.5 font-mono tracking-wider flex items-center justify-center gap-2 uppercase">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span>Типові часові діаграми автономного інвертора з RL-навантаженням</span>
+            </div>
             
-            <!-- Dual Oscilloscope Subplots (uAB and iH) -->
-            <svg id="inverter-chart-svg" viewBox="0 0 540 240" class="w-full h-auto select-none font-sans block">
+            <!-- Dual Oscilloscope Subplots in SCADA Dark Palette (uAB and iH) -->
+            <svg id="inverter-chart-svg" viewBox="0 0 540 240" class="w-full h-auto select-none font-mono block">
+              <defs>
+                <filter id="inv-glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="1.8" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+                <filter id="inv-glow-green" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="1.8" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+              </defs>
+
               <!-- Top Subplot: uAB, B -->
-              <rect x="48" y="10" width="480" height="88" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+              <rect x="48" y="10" width="480" height="88" rx="4" fill="#030814" stroke="#0e3a4e" stroke-width="1.2"/>
               
-              <!-- Top Grid lines -->
-              <line x1="48" y1="32" x2="528" y2="32" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
-              <line x1="48" y1="54" x2="528" y2="54" stroke="#cbd5e1" stroke-width="0.9" stroke-dasharray="2 2"/>
-              <line x1="48" y1="76" x2="528" y2="76" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
+              <!-- Top Grid lines (dark cyan grid) -->
+              <line x1="48" y1="32" x2="528" y2="32" stroke="#092537" stroke-width="0.8" stroke-dasharray="2 3"/>
+              <line x1="48" y1="54" x2="528" y2="54" stroke="#0369a1" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="48" y1="76" x2="528" y2="76" stroke="#092537" stroke-width="0.8" stroke-dasharray="2 3"/>
 
-              <line x1="108" y1="10" x2="108" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="168" y1="10" x2="168" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="228" y1="10" x2="228" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="288" y1="10" x2="288" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="348" y1="10" x2="348" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="408" y1="10" x2="408" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="468" y1="10" x2="468" y2="98" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="108" y1="10" x2="108" y2="98" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="168" y1="10" x2="168" y2="98" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="228" y1="10" x2="228" y2="98" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="288" y1="10" x2="288" y2="98" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="348" y1="10" x2="348" y2="98" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="408" y1="10" x2="408" y2="98" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="468" y1="10" x2="468" y2="98" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
 
-              <!-- Waveform uAB path -->
-              <path id="path-uab" fill="none" stroke="#1f77b4" stroke-width="1.3"/>
+              <!-- Waveform uAB path (neon cyan glowing square pulses) -->
+              <path id="path-uab" fill="none" stroke="#22d3ee" stroke-width="1.8" filter="url(#inv-glow-cyan)"/>
 
               <!-- Y Axis labels top -->
-              <text x="42" y="16" fill="#1e293b" font-size="9" text-anchor="end" font-sans>100</text>
-              <text x="42" y="35" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>50</text>
-              <text x="42" y="57" fill="#1e293b" font-size="9" text-anchor="end" font-sans>0</text>
-              <text x="42" y="79" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>-50</text>
-              <text x="42" y="99" fill="#1e293b" font-size="9" text-anchor="end" font-sans>-100</text>
-              <text x="14" y="54" fill="#0f172a" font-size="10" font-weight="bold" text-anchor="middle" font-sans transform="rotate(-90 14 54)">uAB, В</text>
+              <text x="42" y="15" fill="#67e8f9" font-size="8.5" text-anchor="end" font-family="monospace">100</text>
+              <text x="42" y="35" fill="#0284c7" font-size="8" text-anchor="end" font-family="monospace">50</text>
+              <text x="42" y="57" fill="#38bdf8" font-size="8.5" text-anchor="end" font-family="monospace">0</text>
+              <text x="42" y="79" fill="#0284c7" font-size="8" text-anchor="end" font-family="monospace">-50</text>
+              <text x="42" y="99" fill="#67e8f9" font-size="8.5" text-anchor="end" font-family="monospace">-100</text>
+              <text x="14" y="54" fill="#38bdf8" font-size="9.5" font-weight="bold" text-anchor="middle" font-family="monospace" transform="rotate(-90 14 54)">uAB, В</text>
 
               <!-- Bottom Subplot: iH, A -->
-              <rect x="48" y="125" width="480" height="92" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/>
+              <rect x="48" y="125" width="480" height="92" rx="4" fill="#030814" stroke="#0e3a4e" stroke-width="1.2"/>
               
               <!-- Bottom Grid lines -->
-              <line x1="48" y1="148" x2="528" y2="148" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
-              <line x1="48" y1="171" x2="528" y2="171" stroke="#cbd5e1" stroke-width="0.9" stroke-dasharray="2 2"/>
-              <line x1="48" y1="194" x2="528" y2="194" stroke="#e2e8f0" stroke-width="0.8" stroke-dasharray="2 2"/>
+              <line x1="48" y1="148" x2="528" y2="148" stroke="#092537" stroke-width="0.8" stroke-dasharray="2 3"/>
+              <line x1="48" y1="171" x2="528" y2="171" stroke="#047857" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="48" y1="194" x2="528" y2="194" stroke="#092537" stroke-width="0.8" stroke-dasharray="2 3"/>
 
-              <line x1="108" y1="125" x2="108" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="168" y1="125" x2="168" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="228" y1="125" x2="228" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="288" y1="125" x2="288" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="348" y1="125" x2="348" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="408" y1="125" x2="408" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
-              <line x1="468" y1="125" x2="468" y2="217" stroke="#f1f5f9" stroke-width="0.8"/>
+              <line x1="108" y1="125" x2="108" y2="217" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="168" y1="125" x2="168" y2="217" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="228" y1="125" x2="228" y2="217" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="288" y1="125" x2="288" y2="217" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="348" y1="125" x2="348" y2="217" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="408" y1="125" x2="408" y2="217" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
+              <line x1="468" y1="125" x2="468" y2="217" stroke="#092537" stroke-width="0.8" stroke-dasharray="1 3"/>
 
-              <!-- Waveform iH path -->
-              <path id="path-ih" fill="none" stroke="#1f77b4" stroke-width="1.6"/>
+              <!-- Waveform iH path (neon emerald glowing filtered sine wave with ripples) -->
+              <path id="path-ih" fill="none" stroke="#34d399" stroke-width="2.2" filter="url(#inv-glow-green)"/>
 
               <!-- Y Axis labels bottom -->
-              <text x="42" y="132" fill="#1e293b" font-size="9" text-anchor="end" font-sans>4</text>
-              <text x="42" y="151" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>2</text>
-              <text x="42" y="174" fill="#1e293b" font-size="9" text-anchor="end" font-sans>0</text>
-              <text x="42" y="197" fill="#64748b" font-size="8.5" text-anchor="end" font-sans>-2</text>
-              <text x="42" y="219" fill="#1e293b" font-size="9" text-anchor="end" font-sans>-4</text>
-              <text x="14" y="171" fill="#0f172a" font-size="10" font-weight="bold" text-anchor="middle" font-sans transform="rotate(-90 14 171)">iH, А</text>
+              <text x="42" y="132" fill="#a7f3d0" font-size="8.5" text-anchor="end" font-family="monospace">4</text>
+              <text x="42" y="151" fill="#059669" font-size="8" text-anchor="end" font-family="monospace">2</text>
+              <text x="42" y="174" fill="#34d399" font-size="8.5" text-anchor="end" font-family="monospace">0</text>
+              <text x="42" y="197" fill="#059669" font-size="8" text-anchor="end" font-family="monospace">-2</text>
+              <text x="42" y="219" fill="#a7f3d0" font-size="8.5" text-anchor="end" font-family="monospace">-4</text>
+              <text x="14" y="171" fill="#34d399" font-size="9.5" font-weight="bold" text-anchor="middle" font-family="monospace" transform="rotate(-90 14 171)">iH, А</text>
 
               <!-- Shared X Ticks: 20.0 to 40.0 ms -->
-              <text x="48" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">20.0</text>
-              <text x="108" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">22.5</text>
-              <text x="168" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">25.0</text>
-              <text x="228" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">27.5</text>
-              <text x="288" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">30.0</text>
-              <text x="348" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">32.5</text>
-              <text x="408" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">35.0</text>
-              <text x="468" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">37.5</text>
-              <text x="528" y="228" fill="#1e293b" font-size="8.5" font-sans text-anchor="middle">40.0</text>
+              <text x="48" y="228" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">20.0</text>
+              <text x="108" y="228" fill="#64748b" font-size="8" font-family="monospace" text-anchor="middle">22.5</text>
+              <text x="168" y="228" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">25.0</text>
+              <text x="228" y="228" fill="#64748b" font-size="8" font-family="monospace" text-anchor="middle">27.5</text>
+              <text x="288" y="228" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">30.0</text>
+              <text x="348" y="228" fill="#64748b" font-size="8" font-family="monospace" text-anchor="middle">32.5</text>
+              <text x="408" y="228" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">35.0</text>
+              <text x="468" y="228" fill="#64748b" font-size="8" font-family="monospace" text-anchor="middle">37.5</text>
+              <text x="528" y="228" fill="#94a3b8" font-size="8.5" font-family="monospace" text-anchor="middle">40.0</text>
 
-              <text x="288" y="239" fill="#0f172a" font-size="10" font-weight="bold" font-sans text-anchor="middle">t, мс</text>
+              <text x="288" y="239" fill="#38bdf8" font-size="10" font-weight="bold" font-family="monospace" text-anchor="middle">t, мс</text>
             </svg>
           </div>
 
           <!-- Interactive controls for the waveform -->
-          <div class="grid grid-cols-2 gap-3 p-3 bg-slate-900/80 rounded-xl border border-slate-800 text-xs font-mono">
+          <div class="grid grid-cols-2 gap-3 p-3 bg-[#060e1d] rounded-xl border border-cyan-500/30 text-xs font-mono">
             <div>
               <div class="flex justify-between text-slate-300 mb-1">
                 <span>Частота комутації ШІМ:</span>
                 <span id="lbl-pwm-fc" class="text-cyan-300 font-bold">2.4 кГц</span>
               </div>
-              <input id="slider-pwm-fc" type="range" min="1.0" max="4.0" step="0.2" value="2.4" oninput="setInverterWavePwm(this.value)" class="w-full accent-cyan-500">
+              <input id="slider-pwm-fc" type="range" min="1.0" max="4.0" step="0.2" value="2.4" oninput="setInverterWavePwm(this.value)" class="w-full accent-cyan-400">
             </div>
             <div>
               <div class="flex justify-between text-slate-300 mb-1">
                 <span>Індуктивність навантаження (L):</span>
-                <span id="lbl-pwm-l" class="text-cyan-300 font-bold">15 мГн</span>
+                <span id="lbl-pwm-l" class="text-emerald-300 font-bold">15 мГн</span>
               </div>
-              <input id="slider-pwm-l" type="range" min="5" max="35" step="2" value="15" oninput="setInverterWaveL(this.value)" class="w-full accent-cyan-500">
+              <input id="slider-pwm-l" type="range" min="5" max="35" step="2" value="15" oninput="setInverterWaveL(this.value)" class="w-full accent-emerald-400">
             </div>
           </div>
 
@@ -1683,11 +1697,11 @@
           </div>
 
           <!-- Theoretical & Educational physics note -->
-          <div class="p-2.5 rounded-lg bg-cyan-950/30 border border-cyan-500/30 text-[11px] text-slate-300 space-y-1">
+          <div class="p-3 rounded-xl bg-[#060d1b] border border-cyan-500/25 text-[11px] text-slate-300 space-y-1.5 font-mono">
             <div class="text-cyan-300 font-bold flex items-center gap-1.5">
               <span>💡</span> <span>Фізичний принцип перетворення (постійний струм ➔ ШІМ ➔ синусоїда):</span>
             </div>
-            <p class="text-slate-300 leading-relaxed font-sans">
+            <p class="text-slate-300 leading-relaxed font-sans text-xs">
               Інвертор перетворює постійний струм фотомодулів/АКБ за принципом широтно-імпульсної модуляції (ШІМ).
               <strong>Верхній графік (uAB)</strong>: напівпровідникові ключі (IGBT) формують прямокутні імпульси напруги постійної амплітуди (±100 В), де тривалість імпульсу змінюється за синусоїдальним законом.
               <strong>Нижній графік (iH)</strong>: завдяки індуктивності RL-навантаження (рівняння L·di/dt + R·i = uAB) високочастотні гармоніки фільтруються, внаслідок чого формується чиста синусоїда вихідного струму частотою 50 Гц із дрібними комутаційними пульсаціями.
