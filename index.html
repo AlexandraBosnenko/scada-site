@@ -245,18 +245,20 @@
       <!-- ================= SECTION 2: DC BUSES & PROTECTION (QSdc & ОПН DC) ================= -->
       <!-- Positive DC Bus -->
       <g id="dc-pos-group">
-        <path id="dc-pos-glow" d="M 300 205 L 530 205" fill="none" stroke="#ea580c" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
-        <path id="dc-pos-main" d="M 300 205 L 530 205" fill="none" stroke="#f97316" stroke-width="4" stroke-linecap="round"/>
-        <path id="flow-dc-pos" d="M 300 205 L 530 205" fill="none" stroke="#fef08a" stroke-width="3" stroke-linecap="round" class="flow-dc"/>
+        <path id="dc-pos-glow" d="M 300 205 L 565 205" fill="none" stroke="#ea580c" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
+        <path id="dc-pos-main" d="M 300 205 L 565 205" fill="none" stroke="#f97316" stroke-width="4" stroke-linecap="round"/>
+        <path id="flow-dc-pos" d="M 300 205 L 565 205" fill="none" stroke="#fef08a" stroke-width="3" stroke-linecap="round" class="flow-dc"/>
+        <circle cx="565" cy="205" r="4.5" fill="#f97316"/>
         <rect id="dc-pos-badge-bg" x="312" y="178" width="68" height="22" rx="5" fill="#18110b" stroke="#f97316" stroke-width="1.2"/>
         <text id="dc-pos-badge-text" x="346" y="193" fill="#fdba74" font-size="11" font-weight="bold" font-family="monospace" text-anchor="middle">DC (+)</text>
       </g>
 
       <!-- Negative DC Bus -->
       <g id="dc-neg-group">
-        <path id="dc-neg-glow" d="M 300 285 L 530 285" fill="none" stroke="#0284c7" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
-        <path id="dc-neg-main" d="M 300 285 L 530 285" fill="none" stroke="#0ea5e9" stroke-width="4" stroke-linecap="round"/>
-        <path id="flow-dc-neg" d="M 300 285 L 530 285" fill="none" stroke="#bae6fd" stroke-width="3" stroke-linecap="round" class="flow-dc"/>
+        <path id="dc-neg-glow" d="M 300 285 L 565 285" fill="none" stroke="#0284c7" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
+        <path id="dc-neg-main" d="M 300 285 L 565 285" fill="none" stroke="#0ea5e9" stroke-width="4" stroke-linecap="round"/>
+        <path id="flow-dc-neg" d="M 300 285 L 565 285" fill="none" stroke="#bae6fd" stroke-width="3" stroke-linecap="round" class="flow-dc"/>
+        <circle cx="565" cy="285" r="4.5" fill="#0ea5e9"/>
         <rect id="dc-neg-badge-bg" x="312" y="296" width="68" height="22" rx="5" fill="#081826" stroke="#0ea5e9" stroke-width="1.2"/>
         <text id="dc-neg-badge-text" x="346" y="311" fill="#7dd3fc" font-size="11" font-weight="bold" font-family="monospace" text-anchor="middle">DC (-)</text>
       </g>
@@ -405,28 +407,47 @@
 
 
       <!-- ================= SECTION 4: AC SWITCHBOARD (РЩ-СЭС) ================= -->
-      <!-- AC Phase Line -->
+      <!-- AC Phase Line (from Inverter to Switchboard) -->
       <g id="ac-phase-group">
-        <path id="ac-phase-glow" d="M 785 190 L 1050 190" fill="none" stroke="#0284c7" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
-        <path id="ac-phase-main" d="M 785 190 L 1050 190" fill="none" stroke="#06b6d4" stroke-width="4" stroke-linecap="round"/>
-        <path id="flow-ac-phase" d="M 785 190 L 1050 190" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round" class="flow-ac"/>
-        <rect id="ac-phase-badge-bg" x="795" y="162" width="82" height="22" rx="5" fill="#082032" stroke="#06b6d4" stroke-width="1.2"/>
-        <text id="ac-phase-badge-text" x="836" y="177" fill="#67e8f9" font-size="11" font-weight="bold" font-family="monospace" text-anchor="middle">L (фаза)</text>
+        <path id="ac-phase-glow" d="M 785 190 L 880 190" fill="none" stroke="#0284c7" stroke-width="14" stroke-linecap="round" opacity="0.35"/>
+        <path id="ac-phase-main" d="M 785 190 L 880 190" fill="none" stroke="#06b6d4" stroke-width="4" stroke-linecap="round"/>
+        <path id="flow-ac-phase" d="M 785 190 L 880 190" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round" class="flow-ac"/>
+        <circle cx="785" cy="190" r="4.5" fill="#06b6d4"/>
+        <circle cx="880" cy="190" r="4.5" fill="#06b6d4"/>
+        <rect id="ac-phase-badge-bg" x="795" y="162" width="76" height="22" rx="5" fill="#082032" stroke="#06b6d4" stroke-width="1.2"/>
+        <text id="ac-phase-badge-text" x="833" y="177" fill="#67e8f9" font-size="11" font-weight="bold" font-family="monospace" text-anchor="middle">L (фаза)</text>
       </g>
 
-      <!-- AC Neutral Line -->
+      <!-- AC Neutral Line (from Inverter to Switchboard) -->
       <g id="ac-neutral-group">
-        <path id="ac-neutral-glow" d="M 785 255 L 1050 255" fill="none" stroke="#1d4ed8" stroke-width="12" stroke-linecap="round" opacity="0.3"/>
-        <path id="ac-neutral-main" d="M 785 255 L 1050 255" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
-        <path id="flow-ac-neutral" d="M 785 255 L 1050 255" fill="none" stroke="#bfdbfe" stroke-width="2" stroke-linecap="round" class="flow-ac"/>
-        <rect id="ac-neutral-badge-bg" x="795" y="267" width="82" height="22" rx="5" fill="#08182b" stroke="#3b82f6" stroke-width="1.2"/>
-        <text id="ac-neutral-badge-text" x="836" y="282" fill="#93c5fd" font-size="11" font-weight="bold" font-family="monospace" text-anchor="middle">N (ноль)</text>
+        <path id="ac-neutral-glow" d="M 785 255 L 880 255" fill="none" stroke="#1d4ed8" stroke-width="12" stroke-linecap="round" opacity="0.3"/>
+        <path id="ac-neutral-main" d="M 785 255 L 880 255" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+        <path id="flow-ac-neutral" d="M 785 255 L 880 255" fill="none" stroke="#bfdbfe" stroke-width="2" stroke-linecap="round" class="flow-ac"/>
+        <circle cx="785" cy="255" r="4.5" fill="#3b82f6"/>
+        <circle cx="880" cy="255" r="4.5" fill="#3b82f6"/>
+        <rect id="ac-neutral-badge-bg" x="795" y="267" width="76" height="22" rx="5" fill="#08182b" stroke="#3b82f6" stroke-width="1.2"/>
+        <text id="ac-neutral-badge-text" x="833" y="282" fill="#93c5fd" font-size="11" font-weight="bold" font-family="monospace" text-anchor="middle">N (ноль)</text>
       </g>
 
       <!-- РЩ-СЭС Boundary Frame (header aligned to the left side of the box) -->
-      <rect id="rsch-frame" x="880" y="55" width="220" height="350" rx="18" fill="#071322" fill-opacity="0.75" stroke="#06b6d4" stroke-width="1.8" stroke-dasharray="8 5"/>
+      <rect id="rsch-frame" x="880" y="55" width="220" height="350" rx="18" fill="#071322" fill-opacity="0.95" stroke="#06b6d4" stroke-width="1.8" stroke-dasharray="8 5"/>
       <text id="rsch-title" x="945" y="84" fill="#38bdf8" font-size="14" font-weight="bold" text-anchor="middle" letter-spacing="1">РЩ-СЭС</text>
       <text id="rsch-subtitle" x="945" y="99" fill="#94a3b8" font-size="9.5" font-family="monospace" text-anchor="middle">Щит AC 230V</text>
+
+      <!-- Internal clean wiring inside РЩ-СЭС -->
+      <!-- Wire from switchboard entrance to SF1 input -->
+      <line x1="880" y1="190" x2="910" y2="190" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="910" cy="190" r="3.5" fill="#06b6d4"/>
+
+      <!-- Wire from SF1 output (X=980, Y=190) routed neatly to top of ОПН AC (X=1037, Y=115) and out to building (X=1100, Y=190) -->
+      <path d="M 980 190 L 995 190 L 995 115 L 1100 115 L 1100 190" fill="none" stroke="#06b6d4" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="980" cy="190" r="3.5" fill="#06b6d4"/>
+      <circle cx="1037" cy="115" r="4" fill="#06b6d4"/>
+      <circle cx="1100" cy="190" r="4" fill="#06b6d4"/>
+
+      <!-- Clean Neutral pass-through inside switchboard from 880 to 1100 -->
+      <line x1="880" y1="255" x2="1100" y2="255" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="1100" cy="255" r="3.5" fill="#3b82f6"/>
 
       <!-- Telemetry sensor badge: AC 230V / 50Hz (neatly positioned on the right side of the header without any overlap) -->
       <g class="scada-node" onclick="openNodeModal('sf1')" transform="translate(1048, 88)">
