@@ -1,6 +1,6 @@
 # Інтерактивна мнемосхема сонячної електростанції (СЕС) 5 кВт
 
-🔗 **Відкрити сайт:** https://alexandrabosnenko.github.io/scada-site/
+🔗 **Відкрити сайт:** https://valeriiasukhomlyn.github.io/scada-site/
 
 🇬🇧 [English version below](#english-version)
 
@@ -65,7 +65,7 @@
 
 ## Interactive Solar Power Plant (SPP) 5 kW SCADA Mimic Diagram
 
-🔗 **Open the site:** https://alexandrabosnenko.github.io/scada-site/
+🔗 **Open the site:** https://valeriiasukhomlyn.github.io/scada-site/
 
 ### What it is
 A web-based educational simulator. It shows how a small solar power plant works, using a SCADA/industrial-automation style diagram. It opens in any browser through a link, with nothing to install.
