@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://valeriiasukhomlyn.github.io/scada-site/sitemap.xml
